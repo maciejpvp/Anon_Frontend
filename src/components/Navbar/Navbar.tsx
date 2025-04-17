@@ -7,7 +7,7 @@ export const Navbar = () => {
   const clearUser = useAuthStore((s) => s.clearUser);
 
   return (
-    <div className="flex flex-row justify-between p-2">
+    <div className="flex flex-row justify-between p-2 h-[45px]">
       <Logo />
       {user && (
         <button onClick={clearUser} className="btn btn-xs btn-warning">

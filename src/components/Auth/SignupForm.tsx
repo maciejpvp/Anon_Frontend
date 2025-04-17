@@ -11,7 +11,6 @@ export const SignupForm = () => {
     const password = formData.get("password") as string;
     const { publicKey } = await generateKeyPair(username);
     await trigger({ username, password, publicKey });
-    console.log(username, password, publicKey);
   };
 
   return (

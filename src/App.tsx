@@ -28,7 +28,7 @@ export const App = () => {
             element={user ? <Navigate to="chat" /> : <Signup />}
           />
           <Route
-            path="/chat"
+            path="/chat/:roomId?"
             element={user ? <Chat /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<Navigate to="/chat" />} />

@@ -54,7 +54,6 @@ export default function PgpTester() {
     try {
       setStatus("Decrypting message...");
       const decrypted = await decryptMessage(encryptedMessage, passphrase);
-      console.log(decrypted);
       setDecryptedMessage(decrypted);
       setStatus("Message decrypted successfully!");
     } catch (error) {
