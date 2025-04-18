@@ -6,9 +6,9 @@ import { ChooseChat } from "../components/Chat/ChooseChat";
 export const Chat = () => {
   const { roomId } = useParams();
   return (
-    <div className="flex flex-row bg-green-600 [height:calc(100dvh-45px)]">
+    <div className="flex flex-row bg-base-200 [height:calc(100dvh-45px)]">
       <FriendList />
-      {roomId ? <ChatContainer roomId={roomId} /> : <ChooseChat />}
+      {roomId ? <ChatContainer /> : <ChooseChat />}
     </div>
   );
 };
