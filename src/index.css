@@ -5,3 +5,16 @@
 body {
   font-family: "Montserrat", sans-serif;
 }
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #3b82f6; /* Tailwind's blue-500 */
+  border-radius: 4px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #e5e7eb; /* Tailwind's gray-200 */
+}

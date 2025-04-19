@@ -10,7 +10,7 @@ export const ChatNavbar = ({
   isOnline = false,
 }: ChatNavbarProps) => {
   return (
-    <div className="border-b border-base-300 p-2 flex flex-row gap-3 items-center justify-start">
+    <div className="border-b border-base-300 p-2 flex flex-row gap-3 items-center justify-start h-[60px]">
       <img
         src={profilePic}
         alt="Profile"

@@ -6,20 +6,25 @@ export const MessageInput = () => {
   const { roomId } = useParams();
   const { sendMessage } = useSendMessage(roomId ? roomId : "");
 
-  const handleSend = () => {
+  const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const message = formData.get("message") as string;
     sendMessage({
-      message: "test1233",
+      message,
     });
+    e.currentTarget.reset();
   };
 
   return (
     <div className="p-3 absolute w-full bottom-4">
-      <label className="input input-primary w-full">
-        <input placeholder="Send encrypted message" name="message" />
-        <FaceSmileIcon className="size-7" />
-        <PlusCircleIcon className="size-7" />
-      </label>
-      <button onClick={handleSend}>SEND</button>
+      <form onSubmit={handleSend}>
+        <label className="input input-primary w-full">
+          <input placeholder="Send encrypted message" name="message" required />
+          <FaceSmileIcon className="size-7" />
+          <PlusCircleIcon className="size-7" />
+        </label>
+      </form>
     </div>
   );
 };

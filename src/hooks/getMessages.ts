@@ -1,12 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../utils/axios";
-
-export type MessageType = {
-  receiverId: string;
-  senderId: string;
-  text: string;
-  createdAt: Date;
-};
+import { MessageType } from "../types";
 
 const fetchMessages = async (friendId: string): Promise<MessageType[]> => {
   const response = await axiosInstance.get(`/message/get-messages/${friendId}`);

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../utils/axios";
-import { MessageType } from "./getMessages";
+import { MessageType } from "../types";
 
 type SendMessageInput = {
   message: string;
@@ -17,7 +17,6 @@ export const useSendMessage = (friendId: string) => {
           message,
         }
       );
-      console.log(res.data);
       return res.data.data as MessageType;
     },
     onSuccess: (newMessage) => {

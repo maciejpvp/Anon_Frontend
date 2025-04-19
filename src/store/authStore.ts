@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../utils/axios";
 
 type User = {
-  id: string;
+  userId: string;
   username: string;
 };
 
