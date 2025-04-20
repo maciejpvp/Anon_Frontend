@@ -1,33 +1,30 @@
-import useSWR from "swr";
+import { useState, useCallback } from "react";
 import { axiosInstance } from "../utils/axios";
 import { useAuthStore } from "../store/authStore";
 import { useSocketStore } from "../store/socketStore";
-
-const fetcher = async () => {
-  const res = await axiosInstance.get("/auth/checkAuth");
-  return res.data;
-};
 
 export const useCheckAuth = () => {
   const setUser = useAuthStore((s) => s.setUser);
   const socketConnect = useSocketStore((s) => s.connect);
 
-  const { error, isLoading, mutate } = useSWR("/auth/checkAuth", fetcher, {
-    onSuccess: (data) => {
-      setUser(data.data);
-      console.log(data.data);
-      socketConnect(data.data.userId);
-    },
-    onError: () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const checkAuth = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await axiosInstance.get("/auth/checkAuth");
+      setUser(res.data.data);
+      socketConnect(res.data.data.userId);
+    } catch {
       console.log("No active session found");
-    },
-    revalidateOnFocus: true,
-    shouldRetryOnError: false,
-  });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [setUser, socketConnect]);
 
   return {
     isLoading,
-    isError: !!error,
-    mutate,
+    refetch: checkAuth,
   };
 };

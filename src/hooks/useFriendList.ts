@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../utils/axios";
 
 export type FriendType = {
@@ -8,17 +8,19 @@ export type FriendType = {
   profilePic: string;
 };
 
-const fetcher = async (url: string) =>
-  await axiosInstance.get(url).then((data) => data.data.data); // returns ONLY friends array
+const fetchFriendList = async (): Promise<FriendType[]> => {
+  const response = await axiosInstance.get("/message/get-friend-list");
+  return response.data.data; // returns ONLY friends array
+};
 
 export const useFriendList = () => {
-  const { data, isLoading } = useSWR<FriendType[]>(
-    "/message/get-friend-list",
-    fetcher
-  );
+  const { data: friends, isLoading } = useQuery({
+    queryKey: ["friendList"],
+    queryFn: fetchFriendList,
+  });
 
   return {
-    friends: data,
+    friends,
     isLoading,
   };
 };

@@ -1,22 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FriendType } from "../../hooks/useFriendList";
+import { useChatStore } from "../../store/chatStore";
 
 type FriendListItemProps = {
   friend: FriendType;
 };
 
 export const FriendListItem = ({ friend }: FriendListItemProps) => {
+  const { roomId } = useParams();
   const navigate = useNavigate();
+  const setActiveChatUsername = useChatStore((s) => s.setActiveUsername);
 
   const profilePic = friend.profilePic ? friend.profilePic : "/default.jpg";
   const handleSelectChat = () => {
+    setActiveChatUsername(friend.username);
     navigate(`/chat/${friend._id}`);
   };
 
   return (
     <div
       onClick={handleSelectChat}
-      className="bg-base-300/60 grid grid-cols-[auto_1fr] items-center h-20 p-2 gap-4 rounded-sm"
+      className={`grid grid-cols-[auto_1fr] items-center h-20 p-2 gap-4 rounded-sm transition-all duration-300 ${
+        roomId === friend._id ? "bg-neutral" : "bg-base-300/60"
+      }`}
     >
       <img
         src={profilePic}

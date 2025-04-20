@@ -7,6 +7,10 @@ type MessageProps = {
 
 export const Message = ({ message }: MessageProps) => {
   const user = useAuthStore((s) => s.user);
+  console.log({
+    senderId: message.senderId,
+    userId: user?.userId,
+  });
   const userId = user?.userId || "";
   return (
     <div

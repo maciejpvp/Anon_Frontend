@@ -1,14 +1,15 @@
+import { useChatStore } from "../../store/chatStore";
+
 type ChatNavbarProps = {
-  username: string;
   profilePic: string;
   isOnline?: boolean;
 };
 
 export const ChatNavbar = ({
-  username,
   profilePic,
   isOnline = false,
 }: ChatNavbarProps) => {
+  const username = useChatStore((s) => s.activeUsername);
   return (
     <div className="border-b border-base-300 p-2 flex flex-row gap-3 items-center justify-start h-[60px]">
       <img

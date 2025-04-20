@@ -1,8 +1,11 @@
+import { Link, useNavigate } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 import { generateKeyPair } from "../../utils/pgp";
+import { Logo } from "../Logo";
 
 export const SignupForm = () => {
-  const { trigger, isMutating } = useSignup();
+  const navigate = useNavigate();
+  const { signup, isLoading } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -10,7 +13,9 @@ export const SignupForm = () => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
     const { publicKey } = await generateKeyPair(username);
-    await trigger({ username, password, publicKey });
+    await signup({ username, password, publicKey }).then(() =>
+      navigate("chat")
+    );
   };
 
   return (
@@ -18,10 +23,13 @@ export const SignupForm = () => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-4 w-96 bg-base-200 justify-center items-center p-4 rounded-sm"
     >
-      <h1 className="text-xl">
-        <span className="text-secondary">N3ver</span>_Chat
-      </h1>
-      <input name="username" placeholder="username" className="input w-full" />
+      <Logo />
+      <input
+        name="username"
+        placeholder="username"
+        className="input w-full"
+        autoFocus
+      />
       <input
         name="password"
         type="password"
@@ -29,10 +37,16 @@ export const SignupForm = () => {
         className="input w-full"
       />
       <button
-        className={`btn  w-full ${isMutating ? "btn-disabled" : "btn-primary"}`}
+        className={`btn  w-full ${isLoading ? "btn-disabled" : "btn-primary"}`}
       >
         Sign Up
       </button>
+      <p className="text-sm">
+        Have an account?{" "}
+        <Link className="text-secondary" to="/login">
+          Login instead
+        </Link>
+      </p>
     </form>
   );
 };

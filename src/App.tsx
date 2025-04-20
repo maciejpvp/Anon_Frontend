@@ -5,13 +5,19 @@ import { Chat } from "./pages/Chat";
 import { useCheckAuth } from "./hooks/useCheckAuth";
 import { useAuthStore } from "./store/authStore";
 import { Navbar } from "./components/Navbar/Navbar";
+import { FullPageLoadingSpinner } from "./components/FullPageLoadingSpinner";
+import { useEffect } from "react";
 
 export const App = () => {
-  const { isLoading } = useCheckAuth();
+  const { isLoading, refetch } = useCheckAuth();
   const user = useAuthStore((s) => s.user);
 
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <FullPageLoadingSpinner />;
   }
 
   return (

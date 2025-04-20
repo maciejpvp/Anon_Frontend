@@ -22,7 +22,7 @@ export const Messages = () => {
     return () => {
       socket?.off("new-message");
     };
-  }, [socket]);
+  }, [socket, addMessage, roomId]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -30,14 +30,20 @@ export const Messages = () => {
 
   return (
     <div className="h-[calc(100%-130px)] overflow-y-auto flex flex-col-reverse p-4 bg-base-200 rounded-box">
-      <ul className="flex flex-col-reverse gap-2">
-        {messages
-          ?.slice()
-          .reverse()
-          .map((message) => (
-            <Message key={message._id} message={message} />
-          ))}
-      </ul>
+      {messages?.length ? (
+        <ul className="flex flex-col-reverse gap-2">
+          {messages
+            ?.slice()
+            .reverse()
+            .map((message) => (
+              <Message key={message._id} message={message} />
+            ))}
+        </ul>
+      ) : (
+        <div className=" h-full flex items-center justify-center text-lg">
+          Start a new converstaion
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
-import useSWRMutation from "swr/mutation";
+import { useState, useCallback } from "react";
 import { axiosInstance } from "../utils/axios";
+import { useAuthStore } from "../store/authStore";
 
 interface SignupArgs {
   username: string;
@@ -7,11 +8,32 @@ interface SignupArgs {
   publicKey: string;
 }
 
-const signupFetcher = async (url: string, { arg }: { arg: SignupArgs }) => {
-  const response = await axiosInstance.post(url, arg);
-  return response.data;
-};
-
 export const useSignup = () => {
-  return useSWRMutation("/auth/register", signupFetcher, {});
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+  const setUser = useAuthStore((s) => s.setUser);
+
+  const signup = useCallback(
+    async (args: SignupArgs) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await axiosInstance.post("/auth/register", args);
+        setUser(response.data);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setUser]
+  );
+
+  return {
+    signup,
+    isLoading,
+    error,
+  };
 };
