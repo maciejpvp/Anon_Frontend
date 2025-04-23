@@ -5,9 +5,11 @@ export const useSocketMessage = () => {
   const queryClient = useQueryClient();
 
   const addMessage = (message: MessageType, friendId: string) => {
-    queryClient.setQueryData<MessageType[]>(["messages", friendId], (old) =>
-      old ? [...old, message] : [message]
-    );
+    queryClient.setQueryData<MessageType[]>(["messages", friendId], (old) => {
+      const exists = old?.some((m) => m._id === message._id);
+      if (exists) return old;
+      return old ? [message, ...old] : [message];
+    });
   };
 
   return { addMessage };

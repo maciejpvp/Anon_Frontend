@@ -18,3 +18,11 @@ body {
 .scrollbar-custom::-webkit-scrollbar-track {
   background: #e5e7eb; /* Tailwind's gray-200 */
 }
+
+.anchor-button {
+  anchor-name: --anchor-1;
+}
+
+.anchor-list {
+  position-anchor: --anchor-1;
+}

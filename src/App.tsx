@@ -4,9 +4,10 @@ import { Signup } from "./pages/Signup";
 import { Chat } from "./pages/Chat";
 import { useCheckAuth } from "./hooks/useCheckAuth";
 import { useAuthStore } from "./store/authStore";
-import { Navbar } from "./components/Navbar/Navbar";
 import { FullPageLoadingSpinner } from "./components/FullPageLoadingSpinner";
 import { useEffect } from "react";
+import { AppLayout } from "./AppLayout";
+import { SettingsPage } from "./pages/SettingsPage";
 
 export const App = () => {
   const { isLoading, refetch } = useCheckAuth();
@@ -22,7 +23,6 @@ export const App = () => {
 
   return (
     <>
-      <Navbar />
       <BrowserRouter>
         <Routes>
           <Route
@@ -34,9 +34,12 @@ export const App = () => {
             element={user ? <Navigate to="chat" /> : <Signup />}
           />
           <Route
-            path="/chat/:roomId?"
-            element={user ? <Chat /> : <Navigate to="/login" />}
-          />
+            path="/"
+            element={user ? <AppLayout /> : <Navigate to="/login" />}
+          >
+            <Route path="/chat/:roomId?" element={<Chat />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/chat" />} />
         </Routes>
       </BrowserRouter>

@@ -7,10 +7,7 @@ type MessageProps = {
 
 export const Message = ({ message }: MessageProps) => {
   const user = useAuthStore((s) => s.user);
-  console.log({
-    senderId: message.senderId,
-    userId: user?.userId,
-  });
+
   const userId = user?.userId || "";
   return (
     <div
@@ -18,7 +15,13 @@ export const Message = ({ message }: MessageProps) => {
         message.senderId === userId ? "chat-end" : "chat-start"
       }`}
     >
-      <li className="chat-bubble ">
+      <li
+        className={`chat-bubble text-primary-content ${
+          message.senderId === userId
+            ? "chat-bubble-primary"
+            : "chat-bubble-neutral"
+        }`}
+      >
         <p>{message.text}</p>
       </li>
     </div>

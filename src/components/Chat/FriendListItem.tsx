@@ -18,10 +18,10 @@ export const FriendListItem = ({ friend }: FriendListItemProps) => {
   };
 
   return (
-    <div
+    <button
       onClick={handleSelectChat}
       className={`grid grid-cols-[auto_1fr] items-center h-20 p-2 gap-4 rounded-sm transition-all duration-300 ${
-        roomId === friend._id ? "bg-neutral" : "bg-base-300/60"
+        roomId === friend._id ? "bg-base-300" : ""
       }`}
     >
       <img
@@ -30,6 +30,6 @@ export const FriendListItem = ({ friend }: FriendListItemProps) => {
         className="rounded-full h-16 w-16 object-cover"
       />
       <p className="text-lg font-medium">{friend.username}</p>
-    </div>
+    </button>
   );
 };

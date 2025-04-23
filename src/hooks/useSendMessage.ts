@@ -20,9 +20,11 @@ export const useSendMessage = (friendId: string) => {
       return res.data.data as MessageType;
     },
     onSuccess: (newMessage) => {
-      queryClient.setQueryData<MessageType[]>(["messages", friendId], (old) =>
-        old ? [...old, newMessage] : [newMessage]
-      );
+      queryClient.setQueryData<MessageType[]>(["messages", friendId], (old) => {
+        const exist = old?.some((m) => m._id === newMessage._id);
+        if (exist) return old;
+        return old ? [newMessage, ...old] : [newMessage];
+      });
     },
   });
 
