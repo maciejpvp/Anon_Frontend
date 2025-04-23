@@ -1,21 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../utils/axios";
 import { MessageType } from "../types";
 
-const fetchMessages = async (friendId: string): Promise<MessageType[]> => {
-  const response = await axiosInstance.get(`/message/get-messages/${friendId}`);
-  return response.data.messages;
+const fetchMessages = async (
+  friendId: string,
+  pageParam?: string
+): Promise<MessageType[]> => {
+  const res = await axiosInstance.get(`/message/get-messages/${friendId}`, {
+    params: {
+      beforeDate: pageParam,
+      limit: 30,
+    },
+  });
+
+  return res.data.messages;
 };
 
 export const useMessages = (friendId: string) => {
-  const { data, isPending: isLoading } = useQuery({
+  const query = useInfiniteQuery<
+    MessageType[],
+    Error,
+    InfiniteData<MessageType[]>,
+    string[],
+    string | undefined
+  >({
     queryKey: ["messages", friendId],
-    queryFn: () => fetchMessages(friendId),
+    queryFn: async ({ pageParam }) => {
+      return fetchMessages(friendId, pageParam);
+    },
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.length < 30) return undefined;
+      return new Date(lastPage[lastPage.length - 1].createdAt).toISOString();
+    },
     enabled: !!friendId,
   });
 
   return {
-    messages: data,
-    isLoading,
+    messages: query.data?.pages.flat() ?? [],
+    fetchNextPage: query.fetchNextPage,
+    hasNextPage: query.hasNextPage,
+    isFetchingNextPage: query.isFetchingNextPage,
+    isLoading: query.isPending,
   };
 };

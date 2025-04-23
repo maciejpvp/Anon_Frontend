@@ -39,6 +39,7 @@ export const App = () => {
           >
             <Route path="/chat/:roomId?" element={<Chat />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/" element={<Navigate to="/chat" />} />
           </Route>
           <Route path="*" element={<Navigate to="/chat" />} />
         </Routes>
