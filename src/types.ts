@@ -3,9 +3,6 @@ export type MessageType = {
   receiverId: string;
   senderId: string;
   text: string;
+  isEdited: boolean;
   createdAt: Date;
 };
-
-export interface ServerToClientEvents {
-  "new-message": (data: MessageType) => void;
-}

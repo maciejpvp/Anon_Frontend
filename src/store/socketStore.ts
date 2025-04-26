@@ -4,6 +4,7 @@ import { MessageType } from "../types";
 
 type ServerToClientEvents = {
   "new-message": (data: MessageType) => void;
+  "edit-message": (data: MessageType) => void;
 };
 
 type ClientToServerEvents = {
@@ -33,7 +34,7 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
       console.log("🔌 Socket connected:", socket.id);
     });
 
-    socket.on("new-message", (data) => {
+    socket.on("edit-message", (data) => {
       console.log(data);
     });
 

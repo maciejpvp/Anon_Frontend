@@ -16,7 +16,7 @@ export const Navbar = () => {
     <div className="flex flex-row justify-between p-2 h-[45px] items-center">
       <Logo />
       <button
-        className="btn anchor-button bg-base-100 border-0"
+        className="btn anchor-button bg-base-100 border-0 shadow-none"
         popoverTarget="popover-1"
       >
         <UserCircleIcon className="size-8 " />

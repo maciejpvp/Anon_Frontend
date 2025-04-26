@@ -7,6 +7,7 @@ import { useSocketMessage } from "../../hooks/useSocketMessage";
 import { useAuthStore } from "../../store/authStore";
 import { MessageType } from "../../types";
 import { FullPageLoadingSpinner } from "../FullPageLoadingSpinner";
+import { useSocketEditMessage } from "../../hooks/useSocketEditMessage";
 
 export const Messages = () => {
   const { roomId } = useParams();
@@ -20,6 +21,7 @@ export const Messages = () => {
     isFetchingNextPage,
   } = useMessages(roomId ?? "");
   const { addMessage } = useSocketMessage();
+  const { editMessage } = useSocketEditMessage();
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
@@ -38,6 +40,22 @@ export const Messages = () => {
       socket?.off("new-message", handler);
     };
   }, [socket, addMessage, roomId, user?.userId]);
+
+  useEffect(() => {
+    const handler = (data: MessageType) => {
+      if (
+        data.senderId === roomId ||
+        (data.senderId === user?.userId && data.receiverId === roomId)
+      ) {
+        editMessage(data, roomId ?? "");
+      }
+    };
+
+    socket?.on("edit-message", handler);
+    return () => {
+      socket?.off("edit-message", handler);
+    };
+  }, [socket, editMessage, roomId, user?.userId]);
 
   useEffect(() => {
     if (!loadMoreRef.current || !hasNextPage) return;
